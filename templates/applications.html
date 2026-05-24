@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">领养申请</p>
+        <h1>领养申请管理</h1>
+    </div>
+</section>
+
+<section class="grid two">
+    <article class="panel">
+        <h2>提交申请</h2>
+        <form method="post" class="form">
+            <label>申请编号
+                <input name="apply_id" placeholder="例如 A005" required>
+            </label>
+            <label>客户
+                <select name="user_id" required>
+                    {% for c in customers %}
+                    <option value="{{ c.user_id }}">{{ c.name }} — {{ c.eligibility_status }} — {{ c.credit_points }} 分</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>备注
+                <input name="audit_remarks" placeholder="例如 初次提交申请">
+            </label>
+            <button type="submit">提交申请</button>
+        </form>
+        <p class="note">客户资格须为"合格"且信用积分不低于 60 分方可提交。</p>
+    </article>
+
+    <article class="panel">
+        <h2>客户列表</h2>
+        <table>
+            <thead>
+                <tr><th>姓名</th><th>资格状态</th><th>信用分</th></tr>
+            </thead>
+            <tbody>
+                {% for c in customers %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.eligibility_status }}</td>
+                    <td>{{ c.credit_points }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </article>
+</section>
+
+<section class="panel">
+    <h2>申请记录</h2>
+    <table>
+        <thead>
+            <tr><th>申请编号</th><th>客户</th><th>申请时间</th><th>审核状态</th><th>备注</th><th>资格状态</th><th>信用分</th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.apply_id }}</td>
+                <td>{{ row.customer_name }}</td>
+                <td>{{ row.apply_time|datefmt }}</td>
+                <td>{{ row.audit_status }}</td>
+                <td>{{ row.audit_remarks or "-" }}</td>
+                <td>{{ row.eligibility_status }}</td>
+                <td>{{ row.credit_points }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">人员管理</p>
+        <h1>人员管理</h1>
+    </div>
+</section>
+
+<section class="panel">
+    <h2>人员列表</h2>
+    <table>
+        <thead>
+            <tr><th>编号</th><th>姓名</th><th>性别</th><th>电话</th><th>身份</th><th>资格 / 职位</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.user_id }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.gender }}</td>
+                <td>{{ row.phone }}</td>
+                <td>{{ row.role }}</td>
+                <td>{{ row.eligibility_status or row.position or "-" }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('delete_person', user_id=row.user_id) }}" onsubmit="return confirm('确认删除 {{ row.name }} 及其全部关联数据？此操作不可撤销。')">
+                        <button class="danger" type="submit">删除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

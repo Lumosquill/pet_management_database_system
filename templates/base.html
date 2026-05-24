@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title or "宠物领养与寄养信息管理系统" }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="mark">P</span>
+            <div>
+                <strong>宠物管理系统</strong>
+                <small>Pet Management</small>
+            </div>
+        </div>
+        <nav>
+            <a href="{{ url_for('index') }}">首页</a>
+            <a href="{{ url_for('applications') }}">领养申请管理</a>
+            <a href="{{ url_for('persons') }}">人员管理</a>
+            <a href="{{ url_for('foster_orders') }}">寄养订单管理</a>
+            <a href="{{ url_for('pet_overview') }}">综合查询</a>
+        </nav>
+    </aside>
+    <main class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages">
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

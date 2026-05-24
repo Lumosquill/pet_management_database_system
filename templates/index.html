@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+	<div>
+		<p class="eyebrow">数据库工程作业</p>
+		<h1>宠物领养与寄养信息管理系统</h1>
+	</div>
+</section>
+
+<section class="stats">
+	<div class="stat"><span>{{ stats.pets }}</span><small>宠物档案</small></div>
+	<div class="stat"><span>{{ stats.customers }}</span><small>客户</small></div>
+	<div class="stat"><span>{{ stats.employees }}</span><small>员工</small></div>
+	<div class="stat"><span>{{ stats.foster_orders }}</span><small>寄养订单</small></div>
+	<div class="stat"><span>{{ stats.adopt_applications }}</span><small>领养申请</small></div>
+</section>
+
+<section class="grid two">
+	<article class="panel">
+		<h2>系统功能概览</h2>
+		<ul class="feature-list">
+			<li><strong>人员管理：</strong>客户和员工统一建档，删除人员时自动清理其在寄养订单、领养申请、照护关系等全部关联记录，确保数据一致性。</li>
+			<li><strong>领养申请：</strong>提交申请时自动校验客户领养资格和信用积分，不符合条件则拒绝并提示原因。</li>
+			<li><strong>寄养订单：</strong>创建寄养订单关联多只宠物，系统根据寄养天数、宠物数量和固定单价自动计算费用。</li>
+			<li><strong>综合查询：</strong>提供领养总览、寄养总览、健康日志明细、客户统计等查询视图。</li>
+		</ul>
+	</article>
+	<article class="panel">
+		<h2>近期健康日志</h2>
+		<table>
+			<thead>
+				<tr><th>编号</th><th>宠物</th><th>类型</th><th>日期</th><th>详情</th><th>费用</th></tr>
+			</thead>
+			<tbody>
+				{% for log in recent_logs %}
+				<tr>
+					<td>{{ log.log_id }}</td>
+					<td>{{ log.pet_name }}</td>
+					<td>{{ log.service_type }}</td>
+					<td>{{ log.log_date|datefmt }}</td>
+					<td>{{ log.detail }}</td>
+					<td>{{ log.cost }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</article>
+</section>
+{% endblock %}

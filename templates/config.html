@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">系统配置</p>
+        <h1>数据库连接串分析</h1>
+    </div>
+</section>
+
+<section class="panel">
+    <h2>连接串代码</h2>
+    <pre><code>pymysql.connect(
+    host=os.getenv("DB_HOST", "127.0.0.1"),
+    port=int(os.getenv("DB_PORT", "3306")),
+    user=os.getenv("DB_USER", "root"),
+    password=os.getenv("DB_PASSWORD", "006315"),
+    database=os.getenv("DB_NAME", "pet_management_db"),
+    charset="utf8mb4"
+)</code></pre>
+</section>
+
+<section class="panel">
+    <h2>连接串组成</h2>
+    <table>
+        <thead>
+            <tr><th>名称</th><th>功能说明</th><th>取值</th></tr>
+        </thead>
+        <tbody>
+            {% for name, desc, value in connection_items %}
+            <tr>
+                <td>{{ name }}</td>
+                <td>{{ desc }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

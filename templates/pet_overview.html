@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <p class="eyebrow">综合查询</p>
+        <h1>综合查询</h1>
+    </div>
+</section>
+
+<section class="panel">
+    <form method="get" class="inline-form">
+        <label>查询类别
+            <select name="view" onchange="this.form.submit()">
+                <option value="adopt"  {% if view=='adopt' %}selected{% endif %}>领养总览</option>
+                <option value="foster" {% if view=='foster' %}selected{% endif %}>寄养总览</option>
+                <option value="health" {% if view=='health' %}selected{% endif %}>健康日志</option>
+                <option value="summary" {% if view=='summary' %}selected{% endif %}>客户统计</option>
+            </select>
+        </label>
+        {% if view != 'summary' %}
+        <label>关键词搜索
+            <input name="keyword" value="{{ keyword }}" placeholder="宠物名、品种等">
+        </label>
+        {% endif %}
+        <button type="submit">查询</button>
+    </form>
+</section>
+
+{% if view == 'adopt' %}
+<section class="panel">
+    <h2>领养总览</h2>
+    <table>
+        <thead>
+            <tr><th>宠物ID</th><th>名称</th><th>品种</th><th>性别</th><th>年龄</th><th>健康状态</th><th>领养状态</th><th>是否绝育</th><th>来源</th><th>申请人</th><th>审核状态</th><th>申请时间</th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.pet_id }}</td>
+                <td>{{ row.pet_name }}</td>
+                <td>{{ row.breed }}</td>
+                <td>{{ row.gender }}</td>
+                <td>{{ row.age }}</td>
+                <td>{{ row.health_status }}</td>
+                <td>{{ row.adopt_status or "-" }}</td>
+                <td>{{ row.is_neutered or "-" }}</td>
+                <td>{{ row.source or "-" }}</td>
+                <td>{{ row.applicant_name or "-" }}</td>
+                <td>{{ row.audit_status or "-" }}</td>
+                <td>{{ row.apply_time|datefmt }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% elif view == 'foster' %}
+<section class="panel">
+    <h2>寄养总览</h2>
+    <table>
+        <thead>
+            <tr><th>宠物ID</th><th>名称</th><th>品种</th><th>性别</th><th>健康状态</th><th>订单编号</th><th>开始日期</th><th>结束日期</th><th>费用</th><th>订单状态</th><th>客户</th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.pet_id }}</td>
+                <td>{{ row.pet_name }}</td>
+                <td>{{ row.breed }}</td>
+                <td>{{ row.gender }}</td>
+                <td>{{ row.health_status }}</td>
+                <td>{{ row.order_id }}</td>
+                <td>{{ row.start_date|datefmt }}</td>
+                <td>{{ row.end_date|datefmt }}</td>
+                <td>{{ row.cost }}</td>
+                <td>{{ row.order_status }}</td>
+                <td>{{ row.customer_name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% elif view == 'health' %}
+<section class="panel">
+    <h2>健康日志</h2>
+    <table>
+        <thead>
+            <tr><th>日志编号</th><th>宠物</th><th>品种</th><th>服务类型</th><th>日期</th><th>详情</th><th>费用</th><th>下次提醒</th><th>处理员工</th><th>职位</th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.log_id }}</td>
+                <td>{{ row.pet_name }}</td>
+                <td>{{ row.breed }}</td>
+                <td>{{ row.service_type }}</td>
+                <td>{{ row.log_date|datefmt }}</td>
+                <td>{{ row.detail }}</td>
+                <td>{{ row.cost }}</td>
+                <td>{{ row.next_remind_date|datefmt }}</td>
+                <td>{{ row.handler_name or "-" }}</td>
+                <td>{{ row.handler_position or "-" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+{% elif view == 'summary' %}
+<section class="panel">
+    <h2>客户统计</h2>
+    <table>
+        <thead>
+            <tr><th>客户编号</th><th>姓名</th><th>电话</th><th>注册时间</th><th>资格状态</th><th>信用分</th><th>寄养订单数</th><th>领养申请数</th><th>寄养总花费</th></tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.user_id }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.phone }}</td>
+                <td>{{ row.register_time|datefmt }}</td>
+                <td>{{ row.eligibility_status }}</td>
+                <td>{{ row.credit_points }}</td>
+                <td>{{ row.foster_order_count }}</td>
+                <td>{{ row.adopt_apply_count }}</td>
+                <td>{{ row.total_foster_cost }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
+
+{% endblock %}
