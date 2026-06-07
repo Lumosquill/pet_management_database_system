@@ -7,15 +7,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    {# 左侧导航栏，sticky 定位，滚动时固定不动 #}
     <aside class="sidebar">
         <div class="brand">
-            <span class="mark">P</span>
+            <span class="mark">🏠</span>
             <div>
                 <strong>宠物管理系统</strong>
                 <small>Pet Management</small>
             </div>
         </div>
         <nav>
+            {# 5 个页面入口 —— 使用 url_for 动态生成路径，路由变更时自动更新 #}
             <a href="{{ url_for('index') }}">首页</a>
             <a href="{{ url_for('applications') }}">领养申请管理</a>
             <a href="{{ url_for('persons') }}">人员管理</a>
@@ -23,7 +25,9 @@
             <a href="{{ url_for('pet_overview') }}">综合查询</a>
         </nav>
     </aside>
+
     <main class="main">
+        {# Flash 消息区 —— 后端通过 flash() 向这里推送操作结果 #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="messages">
@@ -33,6 +37,8 @@
                 </div>
             {% endif %}
         {% endwith %}
+
+        {# 子页面内容插槽 —— 每个页面通过 {% block content %} 填入自己的内容 #}
         {% block content %}{% endblock %}
     </main>
 </body>

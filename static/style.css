@@ -1,15 +1,17 @@
 :root {
     color-scheme: light;
-    --bg: #f6f7f4;
-    --panel: #ffffff;
-    --ink: #202522;
-    --muted: #66706a;
-    --line: #dfe4dc;
-    --green: #2f6f55;
-    --blue: #256a86;
-    --amber: #b26a2c;
-    --red: #b74d4d;
+    --bg: #f6f7f4;      /* 页面底色 */
+    --panel: #ffffff;   /* 卡片/面板底色 */
+    --ink: #202522;     /* 主文字色 */
+    --muted: #66706a;   /* 辅助文字色 */
+    --line: #dfe4dc;    /* 边框/分割线 */
+    --green: #2f6f55;   /* 主色调 — 按钮、强调数字 */
+    --blue: #256a86;    /* 辅助色 — 页面眉题 */
+    --amber: #b26a2c;   /* 警告色 */
+    --red: #b74d4d;     /* 危险/错误色 */
 }
+
+/* 全局重置与页面布局 */
 
 * {
     box-sizing: border-box;
@@ -19,11 +21,13 @@ body {
     margin: 0;
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 248px 1fr;
+    grid-template-columns: 248px 1fr;   /* 侧边栏定宽 + 主内容自适应 */
     background: var(--bg);
     color: var(--ink);
     font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
 }
+
+/* 侧边栏  */
 
 .sidebar {
     min-height: 100vh;
@@ -31,7 +35,7 @@ body {
     background: #ffffff;
     border-right: 1px solid var(--line);
     position: sticky;
-    top: 0;
+    top: 0;                             /* 滚动时侧边栏固定不动 */
 }
 
 .brand {
@@ -48,16 +52,16 @@ body {
 }
 
 .mark {
-    width: 38px;
-    height: 38px;
+    width: 42px;
+    height: 42px;
     display: grid;
     place-items: center;
-    border-radius: 8px;
+    border-radius: 50%;
     background: var(--green);
-    color: white;
-    font-weight: 700;
+    font-size: 22px;
 }
 
+/* 导航链接 */
 nav {
     display: grid;
     gap: 8px;
@@ -71,13 +75,17 @@ nav a {
 }
 
 nav a:hover {
-    background: #eef3ed;
+    background: #eef3ed;               /* 悬停浅绿底色 */
 }
+
+/* 主内容区  */
 
 .main {
     padding: 34px;
     overflow-x: auto;
 }
+
+/* 页面头部  */
 
 .page-head {
     display: flex;
@@ -106,6 +114,8 @@ h2 {
     font-size: 18px;
     margin-bottom: 16px;
 }
+
+/* 统计卡片 */
 
 .stats {
     display: grid;
@@ -136,6 +146,8 @@ h2 {
     color: var(--muted);
 }
 
+/* 网格与面板 */
+
 .grid {
     display: grid;
     gap: 16px;
@@ -143,7 +155,7 @@ h2 {
 }
 
 .grid.two {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);  /* 两列等宽 */
 }
 
 .panel {
@@ -156,6 +168,8 @@ h2 {
     padding-left: 18px;
     line-height: 1.9;
 }
+
+/* 表格 */
 
 table {
     width: 100%;
@@ -174,8 +188,10 @@ td {
 th {
     color: var(--muted);
     font-weight: 700;
-    background: #fafbf8;
+    background: #fafbf8;               /* 表头浅灰绿底色 */
 }
+
+/* 表单 */
 
 .form,
 .inline-form {
@@ -184,8 +200,8 @@ th {
 }
 
 .inline-form {
-    grid-template-columns: minmax(180px, 1fr) minmax(160px, 220px) auto;
-    align-items: end;
+    grid-template-columns: minmax(180px, 1fr) minmax(160px, 220px) auto;  /* 输入框 + 输入框 + 按钮 */
+    align-items: end;                  /* 底部对齐 */
 }
 
 label {
@@ -220,11 +236,11 @@ button {
 }
 
 button:hover {
-    filter: brightness(0.95);
+    filter: brightness(0.95);          /* 悬停微暗 */
 }
 
 button.danger {
-    background: var(--red);
+    background: var(--red);            /* 删除按钮红色 */
 }
 
 .note {
@@ -232,6 +248,8 @@ button.danger {
     color: var(--muted);
     line-height: 1.7;
 }
+
+/* 消息提示（flash） */
 
 .messages {
     display: grid;
@@ -249,13 +267,13 @@ button.danger {
 .message.success {
     border-color: #b7d8c5;
     color: var(--green);
-    background: #f0f8f3;
+    background: #f0f8f3;               /* 成功 — 浅绿底色 */
 }
 
 .message.error {
     border-color: #e0b6b6;
     color: var(--red);
-    background: #fff5f5;
+    background: #fff5f5;               /* 失败 — 浅红底色 */
 }
 
 pre {
@@ -267,16 +285,19 @@ pre {
     color: #f6f7f4;
 }
 
+/* 响应式：窄屏（≤900px）切换为单列布局 */
+
 @media (max-width: 900px) {
     body {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr;    /* 取消侧边栏，全宽 */
     }
 
     .sidebar {
-        position: static;
+        position: static;              /* 取消 sticky */
         min-height: auto;
     }
 
+    /* 统计卡片、双列网格、表单全部改为单列 */
     .stats,
     .grid.two,
     .inline-form {

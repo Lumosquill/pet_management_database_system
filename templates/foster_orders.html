@@ -8,23 +8,33 @@
 </section>
 
 <section class="panel">
-    <h2>更新寄养费用</h2>
+    <h2>自动计价</h2>
     <form method="post" class="inline-form">
-        <label>订单编号
-            <input name="order_id" value="F001" required>
+        <label>选择订单
+            <select name="order_id" required>
+                <option value="">— 请选择 —</option>
+                {% for row in rows %}
+                <option value="{{ row.order_id }}">
+                    {{ row.order_id }} — {{ row.customer_name }} —
+                    {{ row.pet_names or '无宠物' }}{% if row.foster_days %}（{{ row.foster_days }} 天）{% endif %}
+                </option>
+                {% endfor %}
+            </select>
         </label>
-        <label>每日单价（元）
-            <input name="daily_price" type="number" step="0.01" value="100" required>
-        </label>
-        <button type="submit">计算费用</button>
+        <button type="submit">自动计算费用</button>
     </form>
+    <p class="note">
+        计价规则：<br>
+        ① 基础 80 元/只/天 ② 多只折扣：&gt;2 打 9 折，&gt;4 打 85 折<br>
+        ③ 超过 30 天部分按原价 9 折 ④ 烈性犬/爬行类额外加收 30 元/天
+    </p>
 </section>
 
 <section class="panel">
     <h2>寄养订单列表</h2>
     <table>
         <thead>
-            <tr><th>订单编号</th><th>客户</th><th>寄养宠物</th><th>数量</th><th>开始日期</th><th>结束日期</th><th>费用</th><th>状态</th></tr>
+            <tr><th>订单编号</th><th>客户</th><th>寄养宠物</th><th>数量</th><th>天数</th><th>开始日期</th><th>结束日期</th><th>费用</th><th>状态</th></tr>
         </thead>
         <tbody>
             {% for row in rows %}
@@ -33,9 +43,10 @@
                 <td>{{ row.customer_name }}</td>
                 <td>{{ row.pet_names or "-" }}</td>
                 <td>{{ row.pet_count }}</td>
+                <td>{{ row.foster_days or '-' }}</td>
                 <td>{{ row.start_date|datefmt }}</td>
                 <td>{{ row.end_date|datefmt }}</td>
-                <td>{{ row.cost }}</td>
+                <td>{{ row.cost or '-' }}</td>
                 <td>{{ row.order_status }}</td>
             </tr>
             {% endfor %}
